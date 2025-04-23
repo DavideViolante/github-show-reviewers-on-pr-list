@@ -1,3 +1,4 @@
+// This extension was mostly written by CoPilot
 const GITHUB_TOKEN = '';
 
 function getRepoInfoFromURL() {
@@ -5,7 +6,6 @@ function getRepoInfoFromURL() {
   return match ? { owner: match[1], repo: match[2] } : null;
 }
 
-// Add debug logs to fetchReviewers
 const fetchReviewers = async (owner, repo, prNumber) => {
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
