@@ -6,35 +6,32 @@ function getRepoInfoFromURL() {
   return match ? { owner: match[1], repo: match[2] } : null;
 }
 
-const fetchReviewers = async (owner, repo, prNumber) => {
+async function fetchReviewers(owner, repo, prNumber) {
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
     {
       headers: {
         Authorization: `Bearer ${GITHUB_TOKEN}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
       }
     }
   );
-
   if (!response.ok) {
     console.error(`Failed to fetch reviewers for PR #${prNumber}`, await response.text());
     return [];
   }
-
   const data = await response.json();
   return [
     ...data.requested_reviewers.map(user => ({ login: user.login, avatar_url: user.avatar_url })),
     ...data.requested_teams.map(team => ({ login: `@${team.name}`, avatar_url: '' }))
   ];
-};
+}
 
 function getPRRows() {
   return [...document.querySelectorAll('a[data-hovercard-type="pull_request"]')];
 }
 
-// Update processPRs to add tooltips to reviewer avatars
 async function processPRs() {
   const repoInfo = getRepoInfoFromURL();
   if (!repoInfo) {
@@ -44,7 +41,7 @@ async function processPRs() {
   const rows = getPRRows();
 
   for (const row of rows) {
-    const href = row.getAttribute("href"); // e.g. /fybrasrl/web-app/pull/175
+    const href = row.getAttribute('href'); // Eg: /davideviolante/repo/pull/123
     const numberMatch = href.match(/\/pull\/(\d+)/);
     if (!numberMatch) {
       continue;
@@ -69,11 +66,11 @@ async function processPRs() {
       tooltipDiv.setAttribute('aria-label', `Reviewer: ${reviewer.login}`);
 
       const avatar = document.createElement('img');
-      avatar.src = reviewer.avatar_url || 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
+      avatar.src = reviewer.avatar_url;
       avatar.alt = reviewer.login;
       avatar.width = 20;
       avatar.height = 20;
-      avatar.className = "avatar-user avatar";
+      avatar.className = 'avatar-user avatar';
       avatar.style.marginLeft = '4px';
 
       tooltipDiv.appendChild(avatar);
