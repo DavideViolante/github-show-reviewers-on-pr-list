@@ -1,3 +1,4 @@
+// Note: this extension is mostly written by CoPilot
 // Ensure the GitHub token is loaded before making API requests
 let GITHUB_TOKEN = '';
 
