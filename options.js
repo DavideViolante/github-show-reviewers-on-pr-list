@@ -1,9 +1,10 @@
 // Move inline script to an external JavaScript file to comply with Content Security Policy
 const saveButton = document.getElementById('save-token');
 const feedback = document.getElementById('feedback');
+const tokenInput = document.getElementById('github-token');
 
 saveButton.addEventListener('click', () => {
-  const token = document.getElementById('github-token').value.trim();
+  const token = tokenInput.value.trim();
 
   if (!token) {
     feedback.textContent = 'GitHub token cannot be empty.';
@@ -25,6 +26,13 @@ saveButton.addEventListener('click', () => {
   });
 });
 
+// Add event listener to save the token when pressing Enter
+tokenInput.addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    saveButton.click();
+  }
+});
+
 chrome.storage.sync.get('GITHUB_TOKEN', (result) => {
-  document.getElementById('github-token').value = result.GITHUB_TOKEN || '';
+  tokenInput.value = result.GITHUB_TOKEN || '';
 });
