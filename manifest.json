@@ -2,14 +2,14 @@
   "manifest_version": 3,
   "name": "GitHub show reviewers on PR list",
   "version": "1.0",
-  "description": "Show reviewers on pull requests list on GitHub.",
-  "permissions": ["activeTab", "scripting"],
+  "description": "Show reviewers on the GitHub PR list.",
+  "permissions": ["storage"],
   "host_permissions": [
     "https://api.github.com/*", "https://github.com/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://github.com/*/*/pulls*"],
+      "matches": ["https://github.com/*"],
       "js": ["content.js"]
     }
   ],
@@ -17,9 +17,10 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "",
+    "default_title": "GitHub show reviewers on PR list",
     "default_icon": "icons/icon128.png"
   },
+  "options_page": "options.html",
   "icons": {
     "128": "icons/icon128.png"
   }

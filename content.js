@@ -1,5 +1,14 @@
-// This extension was mostly written by CoPilot
-const GITHUB_TOKEN = '';
+// Ensure the GitHub token is loaded before making API requests
+let GITHUB_TOKEN = '';
+
+chrome.storage.sync.get('GITHUB_TOKEN', (result) => {
+  GITHUB_TOKEN = result.GITHUB_TOKEN || '';
+  if (!GITHUB_TOKEN) {
+    console.error("GitHub token is not set. Please configure it in the extension settings.");
+  } else {
+    processPRs();
+  }
+});
 
 function getRepoInfoFromURL() {
   const match = window.location.pathname.match(/^\/([^/]+)\/([^/]+)/);
@@ -7,6 +16,11 @@ function getRepoInfoFromURL() {
 }
 
 async function fetchReviewers(owner, repo, prNumber) {
+  if (!GITHUB_TOKEN) {
+    console.error("GitHub token is not available. Cannot fetch reviewers.");
+    return [];
+  }
+
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}`,
     {
@@ -62,7 +76,7 @@ async function processPRs() {
 
     reviewers.forEach(reviewer => {
       const tooltipDiv = document.createElement('div');
-      tooltipDiv.className = 'AvatarStack AvatarStack--right ml-2 flex-1 flex-shrink-0';
+      tooltipDiv.className = 'AvatarStack AvatarStack--right ml-2 flex-1 flex-shrink-0 tooltipped tooltipped-sw';
       tooltipDiv.setAttribute('aria-label', `Reviewer: ${reviewer.login}`);
 
       const avatar = document.createElement('img');
@@ -81,5 +95,3 @@ async function processPRs() {
     linkedIssueSpan.parentNode.insertBefore(reviewersContainer, linkedIssueSpan.nextSibling);
   }
 }
-
-processPRs();

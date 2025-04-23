@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub Token Setup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #feedback {
+      margin-top: 10px;
+      display: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Setup GitHub Token</h1>
+  <label for="github-token">GitHub Token:</label>
+  <input type="text" id="github-token" placeholder="Enter your GitHub token here">
+  <button id="save-token">Save</button>
+  <div id="feedback"></div>
+  <script src="options.js"></script>
+</body>
+</html>
